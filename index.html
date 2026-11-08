@@ -171,7 +171,7 @@
     .status-notice.success{border-color:rgba(72,177,133,.45)}
     .result-heading.success{color:#b8ebc9}.result-heading.warning{color:#f3c58d}
     .notice-box{border-color:rgba(211,166,104,.28);color:#d8c5aa}
-    /* Bảng 5 cổng: ba cột rõ ràng, giảm chói, nút truy cập nổi bật nhưng nhẹ mắt. */
+    /* Bảng chọn cổng: ba cột rõ ràng, giảm chói, nút truy cập nổi bật nhưng nhẹ mắt. */
     .dropdown{max-height:min(440px,62vh);border-color:rgba(224,165,100,.47);background:#292630;scrollbar-width:thin;scrollbar-color:#8b6949 #292630;overscroll-behavior:contain}
     .target-option,.target-option:nth-child(even){grid-template-columns:minmax(89px,.84fr) minmax(148px,1.16fr) minmax(169px,1.65fr);min-height:77px;gap:1px;border-bottom-color:rgba(232,188,133,.13);background:#2d2930}
     .target-option > .target-id,.target-option > .target-meta,.target-option > .target-message{min-height:77px}
@@ -336,7 +336,7 @@
           <li>Thiết lập lớp bảo mật 2FA và xác thực đa yếu tố</li>
           <li>Giám sát hoạt động real-time và phát hiện xâm nhập</li>
         </ul>
-        <a id="find-gate" class="gradient-button block-button" href="https://xx8win.net" target="_blank" rel="noopener noreferrer" aria-label="Tìm cổng đăng nhập cho tài khoản mới, mở XX8WIN trong tab mới"><span aria-hidden="true">ϟ</span> Tìm cổng đăng nhập cho tài khoản mới</a>
+        <a id="find-gate" class="gradient-button block-button" href="https://xx8win.net" target="_blank" rel="noopener noreferrer" aria-label="Tìm cổng đăng nhập cho tài khoản mới, mở XX8WIN trong tab mới"><span aria-hidden="true">ϟ</span> Tìm cổng uy tín đang nhả hỗ trọ thành viên mới</a>
       </article>
       <article class="panel">
         <div class="card-title"><span class="mini-icon">♙</span><div><h2>System Targets</h2><div class="card-subtitle">Chọn cổng để thực thi xoá mã ẩn</div></div></div>
@@ -408,14 +408,26 @@
     { id: 'AD88', rank: 2, percent: 48 },
     { id: 'OPEN88', rank: 3, percent: 46 },
     { id: 'HI88', rank: 4, percent: 42 },
-    { id: 'JUN88', rank: 5, percent: 38 }
+    { id: 'JUN88', rank: 5, percent: 38 },
+    { id: 'MM88', rank: 6, percent: 37 },
+    { id: 'GG88', rank: 7, percent: 36 },
+    { id: 'FLY88', rank: 8, percent: 35 },
+    { id: 'SC88', rank: 9, percent: 35 },
+    { id: '789BET', rank: 10, percent: 35 },
+    { id: 'QH88', rank: 11, percent: 35 }
   ];
   const GATE_LINKS = {
     'XX8': 'https://xx8win.net',
     'AD88': '',
     'OPEN88': '',
     'HI88': '',
-    'JUN88': ''
+    'JUN88': '',
+    'MM88': '',
+    'GG88': '',
+    'FLY88': '',
+    'SC88': '',
+    '789BET': '',
+    'QH88': ''
   };
 
   const GATE_TIMEZONE='Asia/Ho_Chi_Minh';
@@ -452,18 +464,25 @@
       return ((y^(y>>>14))>>>0)/4294967296;
     };
   }
-  // Mỗi khung 30 phút chọn một hoán vị khác với khung ngay trước đó.
-  // Xáo trộn danh sách 24 hoán vị theo một hạt giống cố định, tránh trùng thứ tự liên tiếp.
-  const baseOtherIds=['AD88','OPEN88','HI88','JUN88'];
-  function allPermutations(items) {
-    if(items.length===1)return [items];
-    return items.flatMap((item,i)=>allPermutations(items.filter((_,j)=>j!==i)).map(rest=>[item,...rest]));
+  // Mỗi khung 30 phút xếp lại 10 cổng khác XX8 mà không tạo 10! hoán vị.
+  // Tạo một chu kỳ 24 thứ hạng ổn định, bảo đảm hai khung liên tiếp khác nhau.
+  const baseOtherIds=['AD88','OPEN88','HI88','JUN88','MM88','GG88','FLY88','SC88','789BET','QH88'];
+  const permutations=[];
+  for(let slotIndex=0;slotIndex<24;slotIndex++){
+    const order=baseOtherIds.slice();
+    const rand=seededRandom(20261108+slotIndex);
+    for(let i=order.length-1;i>0;i--){
+      const j=Math.floor(rand()*(i+1));
+      [order[i],order[j]]=[order[j],order[i]];
+    }
+    if(permutations.length && order.every((id,i)=>id===permutations[slotIndex-1][i])){
+      order.push(order.shift());
+    }
+    permutations.push(order);
   }
-  const permutations=allPermutations(baseOtherIds);
-  const permutationRand=seededRandom(20261108);
-  for(let i=permutations.length-1;i>0;i--){
-    const j=Math.floor(permutationRand()*(i+1));
-    [permutations[i],permutations[j]]=[permutations[j],permutations[i]];
+  // Chu kỳ không trùng hạng khi chuyển từ khung cuối sang khung đầu.
+  if(permutations[23].every((id,i)=>id===permutations[0][i])){
+    permutations[23].push(permutations[23].shift());
   }
   function syncGateRates() {
     const slot=makeSlotInfo(new Date());
@@ -477,13 +496,13 @@
     const slotNumber=Math.floor(Date.now()/1800000);
     const order=permutations[((slotNumber%24)+24)%24];
     const others=order.map(id=>gates.find(g=>g.id===id));
-    // Chọn 4 số khác nhau trong 35–51%, rồi xếp tỷ lệ giảm dần theo thứ hạng.
+    // Chọn tỷ lệ mô phỏng khác nhau cho 10 cổng trong 35–51%, giảm dần theo thứ hạng.
     const available=Array.from({length:17},(_,i)=>35+i);
     for(let i=available.length-1;i>0;i--){
       const j=Math.floor(next()*(i+1));
       [available[i],available[j]]=[available[j],available[i]];
     }
-    const rates=available.slice(0,4).sort((a,b)=>b-a);
+    const rates=available.slice(0,others.length).sort((a,b)=>b-a);
     others.forEach((gate,index)=>{gate.rank=index+2;gate.percent=rates[index];});
     gates.splice(0,gates.length,xx8,...others);
     if(!gatewayList.classList.contains('hidden'))renderGateOptions();
@@ -597,7 +616,7 @@
         const detail=document.createElement('span');detail.className='gate-low-detail';
         detail.textContent='NỀN TẢNG HẠN CHẾ KINH DOANH – ĐANG TRONG QUÁ TRÌNH GIẢI THỂ';
         const caveat=document.createElement('span');caveat.className='gate-low-disclaimer';
-        caveat.textContent='Nội dung tham khảo, chưa có xác nhận chính thức';
+        caveat.textContent='';
         marquee.append(red,detail,caveat);
       }
       link.append(marquee);
