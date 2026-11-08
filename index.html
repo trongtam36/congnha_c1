@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#0c0a1d" />
-  <meta name="description" content="Bản tái dựng giao diện XOAMAGAME từ video tham khảo. Giao diện mô phỏng, chạy độc lập." />
-  <title>XOAMAGAME — Giao diện mô phỏng</title>
+  <meta name="description" content="" />
+  <title>XOAMAGAME </title>
   <style>
     :root { --bg:#0b0a1e; --ink:#f9f7f4; --muted:#a9b1c7; --orange:#f49016; --yellow:#fbd90b; --edge:rgba(253,160,68,.34); --panel:rgba(54,42,38,.52); --field:#102041; --glow:rgba(244,135,20,.18); --green:#18e7aa; }
     *,*::before,*::after { box-sizing:border-box; }
@@ -146,7 +146,7 @@
         <span class="flag-box"><span class="flag-round"><svg viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" fill="#e92524"/><path fill="#ffed00" d="M50 13 58.8 39.1 86.4 39.1 64 55.7 72.5 81.9 50 65.7 27.5 81.9 36 55.7 13.6 39.1 41.2 39.1Z"/></svg></span></span><span class="country-name">XIN CHÀO VIETNAM</span>
       </button>
     </div>
-    <p class="country-note">Giao diện được dựng lại từ video tham khảo.</p>
+    <p class="country-note"></p>
   </div>
 </section>
 <section id="dashboard" class="dashboard hidden" aria-label="Bảng điều khiển mô phỏng">
@@ -209,10 +209,10 @@
       <button id="twofa-action" type="button" class="panel twofa"><span class="mini-icon">⛨</span><span><strong>Thiết lập bảo mật 2 lớp 2FA</strong><small>Click để thiết lập 2 lớp bảo mật và cài đặt nâng cao</small></span></button>
     </aside>
   </div>
-  <div class="faq"><button id="faq-toggle" type="button" aria-expanded="false">Câu hỏi thường gặp về mã ẩn ⌄</button><div id="faq-content" class="faq-panel hidden">Đây là bản dựng giao diện HTML/CSS/JavaScript từ hình ảnh trong video. Các nút bấm, màn hình chờ và thông báo hoạt động ở chế độ mô phỏng ngay trong trình duyệt. Trang này không can thiệp tài khoản, không thu thập mã xác thực và không cung cấp chức năng xoá mã hoặc bảo mật 2FA thực tế.</div></div>
+  <div class="faq"><button id="faq-toggle" type="button" aria-expanded="false">Câu hỏi thường gặp về mã ẩn ⌄</button><div id="faq-content" class="faq-panel hidden"></div></div>
 </section>
 <button id="telegram-action" class="telegram hidden" type="button" aria-label="Mở hỗ trợ" title="Hỗ trợ"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 3.5 18.8 20c-.24 1.15-.87 1.42-1.77.88l-5.1-3.75-2.46 2.37c-.28.28-.51.51-1.05.51l.36-5.2 9.48-8.58c.42-.36-.09-.57-.64-.21L5.88 13.4.96 11.86c-1.07-.33-1.09-1.07.22-1.59L20.42 2.9c.89-.32 1.67.21 1.38 1.6z"/></svg></button>
-<div id="loading" class="loading-screen hidden" role="status" aria-live="polite"><div class="loading-card"><span class="spinner" aria-hidden="true"></span><p>Đang đồng bộ hệ thống...</p><small>Đang chuẩn bị giao diện</small></div></div>
+<div id="loading" class="loading-screen hidden" role="status" aria-live="polite"><div class="loading-card"><span class="spinner" aria-hidden="true"></span><p>Đang đồng bộ hệ thống...</p><small></small></div></div>
 <div id="toast" class="toast hidden" role="status" aria-live="polite"><span style="font-size:18px">ⓘ</span><span id="toast-content"></span></div>
 <div id="overlay" class="overlay hidden" role="presentation">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
@@ -277,13 +277,13 @@
   $('#modal-close').addEventListener('click',closeModal);
   overlay.addEventListener('pointerdown',e=>{if(e.target===overlay)closeModal();});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!overlay.classList.contains('hidden'))closeModal();else closeDropdown();}});
-  function noticeModal(title,body){showModal(title,`<p>${body}</p><div class="notice-box">Giao diện mô phỏng, không kết nối máy chủ và không yêu cầu mật khẩu hoặc mã OTP thật.</div><div class="modal-actions" style="grid-template-columns:1fr"><button type="button" class="gradient-button" id="understood">Đã hiểu</button></div>`,()=>$('#understood').addEventListener('click',closeModal));}
+  function noticeModal(title,body){showModal(title,`<p>${body}</p><div class="notice-box"></div><div class="modal-actions" style="grid-template-columns:1fr"><button type="button" class="gradient-button" id="understood">Đã hiểu</button></div>`,()=>$('#understood').addEventListener('click',closeModal));}
   $('#find-gate').addEventListener('click',()=>{closeDropdown();noticeModal('Tìm cổng đăng nhập','Danh sách cổng mẫu đã có sẵn trong mục System Targets. Bạn có thể chọn một cổng để xem luồng giao diện.');});
   $('#support-action').addEventListener('click',()=>noticeModal('Liên hệ hỗ trợ','Nút liên hệ đã được mô phỏng theo video. Chưa có địa chỉ hỗ trợ được xác minh để liên kết.'));
-  $('#telegram-action').addEventListener('click',()=>noticeModal('Hỗ trợ','Biểu tượng hỗ trợ được tái tạo theo giao diện tham khảo. Hiện không liên kết đến tài khoản Telegram bên ngoài.'));
-  $('#twofa-action').addEventListener('click',()=>noticeModal('Thiết lập bảo mật 2 lớp 2FA','Khu vực này mô phỏng giao diện thiết lập 2FA. Để bật 2FA thật, bạn cần cấu hình xác thực với hệ thống máy chủ của mình.'));
+  $('#telegram-action').addEventListener('click',()=>noticeModal('Hỗ trợ',' Hiện không liên kết đến tài khoản Telegram bên ngoài.'));
+  $('#twofa-action').addEventListener('click',()=>noticeModal('Thiết lập bảo mật 2 lớp 2FA'));
   $('#faq-toggle').addEventListener('click',()=>{const el=$('#faq-content');const show=el.classList.contains('hidden');el.classList.toggle('hidden',!show);$('#faq-toggle').setAttribute('aria-expanded',String(show));});
-  function showResult(){showModal('Thông báo',`<div class="success-icon">✓</div><div class="result-heading">Thao tác mô phỏng hoàn tất</div><p style="text-align:center">Đây là giao diện thử nghiệm. Không có tài khoản thật nào bị thay đổi, không có mã xác thực nào được lưu hay gửi đi.</p><div class="modal-actions" style="grid-template-columns:1fr"><button id="finish-result" class="gradient-button" type="button">Hoàn thành</button></div>`,()=>$('#finish-result').addEventListener('click',closeModal));}
+  function showResult(){showModal('Thông báo',`<div class="success-icon">✓</div><div class="result-heading">Thao tác mô phỏng hoàn tất</div><p style="text-align:center"> Không có tài khoản thật nào bị thay đổi, không có mã xác thực nào được lưu hay gửi đi.</p><div class="modal-actions" style="grid-template-columns:1fr"><button id="finish-result" class="gradient-button" type="button">Hoàn thành</button></div>`,()=>$('#finish-result').addEventListener('click',closeModal));}
   $('#run-action').addEventListener('click',()=>{
     closeDropdown();
     if(!selectedGateway){toast('Vui lòng chọn cổng game trước khi tiếp tục.');gatewayButton.focus();return;}
